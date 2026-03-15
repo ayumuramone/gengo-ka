@@ -9,56 +9,89 @@
 <meta name="apple-mobile-web-app-title" content="言語化">
 <meta name="theme-color" content="#0f172a">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--dark:#0f172a;--amber:#f59e0b;--bg:#f4f4f2;--sub:#64748b;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
-body{font-family:'Hiragino Kaku Gothic Pro',sans-serif;background:var(--bg);min-height:100dvh}
-.header{background:var(--dark);color:#fff;padding:calc(var(--safe-top) + 28px) 20px 24px;text-align:center;position:sticky;top:0;z-index:100}
+body{font-family:'Hiragino Kaku Gothic Pro','Noto Sans JP',sans-serif;background:var(--bg);min-height:100dvh;overflow-x:hidden}
+.nav{display:flex;background:var(--dark);border-bottom:1px solid #1e293b;padding-top:var(--safe-top)}
+.nav-btn{flex:1;padding:14px 0;font-size:12px;font-weight:700;color:#64748b;background:none;border:none;cursor:pointer;font-family:inherit;border-bottom:3px solid transparent}
+.nav-btn.active{color:#fff;border-bottom-color:var(--amber)}
+.header{background:var(--dark);color:#fff;padding:20px 20px 18px;text-align:center}
+.header-label{font-size:10px;letter-spacing:4px;color:#64748b;margin-bottom:6px}
 .header h1{font-size:20px;font-weight:800}
-.header-count{font-size:12px;color:var(--sub);margin-top:4px}
-.btn-random{display:block;width:calc(100% - 40px);margin:16px auto 0;background:var(--amber);color:var(--dark);border:none;border-radius:30px;padding:14px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit}
-.picked-card{margin:16px;border-radius:16px;padding:20px;border-width:2px;border-style:solid}
-.picked-text{font-size:20px;font-weight:700;line-height:1.7;color:var(--dark)}
-.picked-hint{margin-top:12px;font-size:12px;color:#888}
-.btn-close{margin-top:12px;background:none;border:none;color:#aaa;cursor:pointer;font-size:13px;font-family:inherit}
+.header-count{font-size:12px;color:#64748b;margin-top:4px}
+.btn-random{display:block;width:calc(100% - 40px);margin:14px auto 0;background:var(--amber);color:var(--dark);border:none;border-radius:30px;padding:13px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}
+.picked-wrap{padding:14px 16px 0}
+.picked-card{border-radius:14px;padding:18px 20px;border-width:2px;border-style:solid;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.picked-cat{font-size:10px;font-weight:800;letter-spacing:1.5px;margin-bottom:8px}
+.picked-text{font-size:18px;font-weight:700;line-height:1.7;color:#0f172a}
+.btn-write{display:block;width:100%;margin-top:14px;background:#0f172a;color:#fff;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.btn-close-sm{margin-top:8px;background:none;border:none;color:#aaa;cursor:pointer;font-size:12px;font-family:inherit}
 .controls{padding:14px 16px 0}
-.search-input{width:100%;padding:12px 18px;font-size:15px;border-radius:30px;border:2px solid #e2e8f0;outline:none;background:#fff;font-family:inherit;margin-bottom:12px}
+.search-input{width:100%;padding:11px 18px;font-size:15px;border-radius:30px;border:2px solid #e2e8f0;outline:none;background:#fff;font-family:inherit;margin-bottom:11px}
 .cat-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .cat-scroll::-webkit-scrollbar{display:none}
-.cat-btn{flex-shrink:0;padding:7px 14px;border-radius:20px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;white-space:nowrap}
-.hit-count{font-size:12px;color:var(--sub);padding:8px 4px 4px}
-.q-list{padding:0 16px;display:flex;flex-direction:column;gap:6px;margin-top:8px}
-.q-item{background:#fff;border-radius:10px;padding:14px 16px;display:flex;gap:12px;border-left-width:4px;border-left-style:solid}
-.q-num{color:#cbd5e1;font-size:11px;min-width:28px;padding-top:3px}
-.q-cat{font-size:9px;font-weight:800;letter-spacing:1px;margin-bottom:4px}
-.q-text{font-size:14px;line-height:1.7;color:#1e293b}
-.pagination{display:flex;justify-content:center;gap:6px;padding:20px 16px;flex-wrap:wrap}
-.page-btn{padding:8px 14px;border-radius:20px;border:none;cursor:pointer;font-weight:700;font-family:inherit;font-size:13px}
+.cat-btn{flex-shrink:0;padding:6px 13px;border-radius:20px;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;white-space:nowrap}
+.hit-count{font-size:12px;color:#94a3b8;padding:7px 4px 4px}
+.q-list{padding:0 16px;display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.q-item{background:#fff;border-radius:10px;padding:13px 15px;display:flex;gap:11px;border-left-width:4px;border-left-style:solid;cursor:pointer}
+.q-num{color:#cbd5e1;font-size:11px;min-width:26px;padding-top:2px}
+.q-cat-label{font-size:9px;font-weight:800;letter-spacing:1px;margin-bottom:3px}
+.q-text{font-size:14px;line-height:1.6;color:#1e293b}
+.pagination{display:flex;justify-content:center;gap:6px;padding:18px 16px;flex-wrap:wrap}
+.page-btn{padding:7px 13px;border-radius:20px;border:none;cursor:pointer;font-weight:700;font-family:inherit;font-size:13px}
 .page-btn:disabled{opacity:.4}
-.footer-space{height:calc(var(--safe-bottom) + 24px)}
+.write-screen{display:none;position:fixed;inset:0;background:#fff;z-index:200;overflow-y:auto;padding:calc(var(--safe-top) + 16px) 0 calc(var(--safe-bottom) + 20px)}
+.write-screen.open{display:block}
+.write-header{display:flex;align-items:center;gap:12px;padding:0 16px 16px;border-bottom:1px solid #e2e8f0}
+.btn-back{background:none;border:none;font-size:22px;cursor:pointer;padding:4px;color:#334155}
+.write-title{font-size:15px;font-weight:800;color:#0f172a}
+.write-body{padding:18px 16px}
+.write-q-box{border:2px solid #0f172a;border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:16px;font-weight:700;line-height:1.6;color:#0f172a;background:#f8fafc}
+.write-section{margin-bottom:16px}
+.section-label{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.section-badge{background:#0f172a;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:6px}
+.section-sub{font-size:11px;color:#94a3b8}
+.write-area{width:100%;min-height:120px;padding:12px 14px;font-size:15px;line-height:1.7;border:2px solid #e2e8f0;border-radius:10px;resize:none;font-family:inherit;outline:none;background:#fff;color:#1e293b}
+.write-area:focus{border-color:#0f172a}
+.btn-save{display:block;width:100%;margin-top:8px;background:var(--amber);color:#0f172a;border:none;border-radius:12px;padding:15px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit}
+.save-done{text-align:center;font-size:13px;color:#43a047;margin-top:10px;height:20px}
+.history-empty{text-align:center;padding:60px 20px;color:#94a3b8;font-size:14px}
+.hist-item{background:#fff;margin:10px 16px 0;border-radius:12px;padding:16px;border-left-width:4px;border-left-style:solid}
+.hist-date{font-size:11px;color:#94a3b8;margin-bottom:6px}
+.hist-q{font-size:13px;font-weight:700;color:#0f172a;margin-bottom:10px;line-height:1.5}
+.hist-section{margin-bottom:8px}
+.hist-label{font-size:10px;font-weight:800;color:#64748b;margin-bottom:3px;letter-spacing:1px}
+.hist-text{font-size:13px;color:#334155;line-height:1.6;white-space:pre-wrap}
+.hist-delete{float:right;background:none;border:none;color:#cbd5e1;font-size:18px;cursor:pointer;margin-top:-4px}
+.footer-space{height:calc(var(--safe-bottom) + 30px)}
 </style>
 </head>
 <body>
-<div id="app"></div>
+<div id="root"></div>
 <script>
 const categories={"ビジネス思考・戦略":["この事業の「本質的な価値」は何か？","顧客が本当に求めているものは何か？","競合と自分の「本質的な違い」は何か？","この市場の「構造」はどうなっているか？","5年後、この業界はどう変わっているか？","自分のビジネスの「弱点」を正直に言うと？","今の戦略の「前提」は正しいか？","「売上」と「利益」の違いを説明できるか？","この施策の「機会コスト」は何か？","「選択と集中」すべき領域はどこか？","今の事業の「参入障壁」は何か？","「スケールする」とはどういうことか？","この問題の「根本原因」は何か？","「短期」と「長期」のどちらを優先すべきか？","この決断の「最悪のシナリオ」は何か？","「リスク」と「不確実性」の違いは？","今の自分の「ビジネスモデル」を一言で言うと？","「価格」はどう決めるべきか？","「コスト構造」を理解しているか？","「損益分岐点」はどこか？","この事業で「スティッキー」な要素は何か？","「ネットワーク効果」は働いているか？","「ブランド」と「評判」の違いは？","「差別化」の根拠は持続可能か？","「最小限のプロダクト（MVP）」は何か？","仮説を「検証」するために何をするか？","「顧客インタビュー」から何を学べるか？","「データ」と「直感」をどう組み合わせるか？","「意思決定のスピード」を上げるには？","「情報が足りない状況」でどう判断するか？","「合理的な判断」と「感情的な判断」の違いは？","「バイアス」が意思決定にどう影響するか？","「フレームワーク」を使いすぎていないか？","「構造化思考」と「発散思考」のバランスは？","「問いを立てる力」が仕事でなぜ重要か？","「言語化できない」アイデアは実行できるか？","「数字で語る」とはどういうことか？","「抽象」と「具体」を行き来できているか？","「ロジック」だけでは人は動かせないか？","「相手の立場」に立った提案ができているか？","「WHY→WHAT→HOW」の順で考えているか？","「イシュー」を正確に定義できているか？","「解くべき問題」と「解きやすい問題」を混同していないか？","「80点の答えを早く出す」か「100点を遅く出す」か？","「完璧主義」がスピードを殺していないか？","「優先順位」の判断基準は明確か？","「やめること」を決める勇気はあるか？","「シンプルにする」とはどういうことか？","「複雑な問題」を人に説明できるか？","「一言で言うと？」に答えられるか？"],"キャリア・自己成長":["自分の「市場価値」を正直に評価すると？","3年後、何の「専門家」でいたいか？","自分の「強み」をビジネスで活かせているか？","「得意なこと」と「好きなこと」はどちらを優先するか？","今の仕事から「逃げている」部分はないか？","自分の「成長速度」に満足しているか？","「フィードバック」を素直に受け取れているか？","「メンター」から何を学んでいるか？","「ロールモデル」を具体的に持っているか？","今の環境は「成長できる環境」か？","「居心地のよさ」が成長を妨げていないか？","「コンフォートゾーン」の外に出ているか？","「失敗」を「学習」に変えられているか？","自分の「キャリアの軸」を一言で言うと？","「会社の目標」と「自分の目標」は一致しているか？","「やらされ感」で仕事をしていないか？","「自分ごと」として仕事に向き合えているか？","「プロとしての誇り」を持てているか？","「量をこなした経験」はあるか？","「質を追求した経験」はあるか？","「締め切りを守る」は当然のこととして守れているか？","「約束を守る」ことの積み重ねがキャリアを作るか？","「信頼残高」は増えているか？","「再現性のある仕事のやり方」を持っているか？","「仕組み化」できていることは何か？","「自動化」すべき作業は何か？","「人に任せる」ことで何を得るか？","「任せる恐怖」の正体は何か？","「権限委譲」がなぜ難しいか？","今の自分の「時間の使い方」は投資になっているか？","「学習に投資する時間」は十分か？","「インプット」と「アウトプット」のバランスは？","「読んだ本を仕事に活かす」ためには？","「セミナーで聞いたこと」を翌日実践しているか？","「知っている」と「できる」の差はどこにあるか？","「スキルの半減期」を意識しているか？","「10年後も通用するスキル」は何か？","「AIに代替されにくい能力」を磨いているか？","「人間にしかできないこと」とは何か？","「感情を動かす力」をどう鍛えるか？","「問いを立てる力」を意識的に鍛えているか？","「批判的思考」を仕事で使えているか？","「第一原理思考」で考えたことがあるか？","「前例踏襲」に甘えていないか？","「なぜそのやり方か？」を問い続けているか？","「自分の仕事のやり方」を言語化できるか？","「仕事のノウハウ」を後輩に教えられるか？","「教えることで深まる理解」を経験しているか？","「副業・複業」を考えているか、なぜか？","「独立する」としたら何で食っていけるか？"],"リーダーシップ・人間関係":["「リーダーシップ」と「マネジメント」の違いは？","人を動かすのに「権限」は必要か？","「信頼」を最速で築くにはどうするか？","「心理的安全性」をどうやって作るか？","チームの「モチベーション」の源泉はどこか？","「叱る」と「怒る」の違いは何か？","「フィードバック」を相手に届けるには？","「聴く力」をどう鍛えるか？","「1on1」で何を引き出すか？","部下の「強み」を発見するには？","「弱みを矯正する」か「強みを伸ばす」か？","「仕事の任せ方」で気をつけることは？","「報連相」がうまくいかない原因は何か？","「会議」を生産的にするには？","「会議の目的」を最初に言えているか？","「発言しやすい場」をどうつくるか？","「反対意見」をどう歓迎するか？","「合意形成」のプロセスはどうあるべきか？","「根回し」はどこまで必要か？","「ステークホルダー」を誰が誰か整理できているか？","「上司」との関係をどうマネジメントするか？","「期待値をすり合わせる」とはどういうことか？","「言わなくてもわかるだろう」は通用するか？","「言語化して共有する」文化を作れているか？","「多様な意見」をまとめる力はあるか？","「対立」を「議論」に変えるには？","「感情的になった相手」とどう向き合うか？","「自分が感情的になった時」にどうリカバーするか？","「難しい会話」を避けていないか？","「フィードバックをもらいに行く」習慣があるか？","「自己開示」はどこまですべきか？","「弱さを見せる」ことのメリットとデメリットは？","「影響力」はどこから来るか？","「人を巻き込む力」をどう鍛えるか？","「ビジョン」を語れているか？","「なぜこれをやるか」を伝えられているか？","「チームの価値観」は共有されているか？","「文化」は意図的に作れるか？","「採用」で最も大切にすることは？","「チームの空気」は誰が作っているか？","「褒める」ことをサボっていないか？","「感謝を伝える」習慣はあるか？","「謝罪」をためらう心理の正体は？","「失敗を責める文化」がチームを弱くするか？","「失敗を許容する文化」の作り方は？","「優秀な人が辞める」原因は何か？","「仕事の意味」を自分が語れているか？","「ロールモデル」として部下に見られているか？","「自分がいなくても回るチーム」を作れているか？","「人を育てる喜び」を感じているか？"],"マーケティング・顧客理解":["「顧客」を一言で定義すると誰か？","顧客の「本当の悩み」は何か？","顧客は「何を買っている」のか、本質は？","「機能的価値」と「感情的価値」の違いは？","自分の商品・サービスの「ジョブ理論」でいうジョブは？","顧客が「選ばない理由」は何か？","「ペルソナ」を具体的に描けているか？","「カスタマージャーニー」を可視化しているか？","「タッチポイント」はどこにあるか？","顧客の「最初の接点」はどこか？","「認知→興味→行動→継続」のどこが弱いか？","「口コミが生まれる」条件は何か？","「ファン」と「顧客」の違いは何か？","「LTV（顧客生涯価値）」を意識しているか？","「解約理由」を正直に把握しているか？","「NPS（推奨度）」はどれくらいか？","「価格に不満がある顧客」と「価値に不満がある顧客」の違いは？","「値下げ」以外の顧客維持策は何か？","「プレミアム価格」が成立する条件は何か？","「コモディティ化」を防ぐには何が必要か？","「ブランドの約束」とは何か？","「一貫性」がブランドになぜ重要か？","「コンテンツ」で顧客の信頼を得られているか？","「有益な情報」と「宣伝」の境目はどこか？","「SEO」と「SNS」をどう使い分けるか？","「バイラル」が起きる仕組みは何か？","「広告費」と「コンテンツ投資」のバランスは？","「ABテスト」で何を学んでいるか？","「マーケティングの成果」をどう測るか？","「虚偽のない広告」を作れているか？","「顧客の声」を商品開発に活かせているか？","「失客した顧客」から何を学んでいるか？","「最もロイヤルな顧客」は誰で、なぜか？","「顧客セグメント」を正しく分けているか？","「ニッチ」と「ブルーオーシャン」の違いは？","「マーケットイン」と「プロダクトアウト」のどちらか？","「共感」を生む言葉を使えているか？","「ベネフィット」と「フィーチャー」を混同していないか？","「ストーリー」で価値を伝えられているか？","「社会的証明」をどう活用しているか？","「希少性」の演出は倫理的にできているか？","「購買心理」を理解した提案ができているか？","「クレーム」をチャンスに変えた経験は？","「一番喜んでもらえた瞬間」はいつか？","「顧客の期待を超える」とはどういうことか？","「サービスの設計」に顧客視点が入っているか？","「競合他社」の顧客から学べることは何か？","「業界の常識」を疑った結果、気づいたことは？","「顧客のコンテキスト（状況）」を理解できているか？","「長期的な信頼」と「短期的な売上」のどちらを選ぶか？"],"自己理解・思考習慣":["今の自分の「強み」を3つ挙げると？","今の自分の「弱み」を正直に3つ挙げると？","自分の「意思決定の癖」はどんなものか？","「感情で動く」か「論理で動く」か、どちらが強いか？","自分の「コミュニケーションスタイル」は？","「ストレスのサイン」はどんな状態か？","「パフォーマンスが最高の状態」はどんな条件か？","「集中できない時」の原因パターンは？","「先延ばし」をするのはどんな種類のタスクか？","「やる気が出ない」時の本当の理由は何か？","「怒り」を感じる時、何が侵されているか？","「不安」の正体を言語化できているか？","「不安」と「リスク」の違いは？","自分の「価値観」と行動は一致しているか？","「言っていること」と「やっていること」に矛盾はないか？","「他者の評価」に振り回されていないか？","「承認欲求」が意思決定を歪めていないか？","「恐怖」が行動を止めているのはどこか？","「自信」はどこから来るか？","「根拠のない自信」と「実力に基づく自信」の違いは？","「失敗した後」の自分との向き合い方は？","「批判された時」の反応パターンは？","「褒められた時」の反応パターンは？","「自分を過小評価している」ことはあるか？","「自分を過大評価している」ことはあるか？","「メタ認知」できている状態とはどんな状態か？","「客観的に自分を見る」練習はしているか？","「自分の思考の癖」に名前をつけると？","「固定観念」を崩された最近の体験は？","「当たり前」を疑うと何が見えるか？","「前提を変える」と問いがどう変わるか？","「アナロジー思考」を使えているか？","「逆から考える」とどう見えるか？","「最悪を想定する」と何が変わるか？","「ゼロベースで考える」とはどういうことか？","「思考の枠」を広げるためにしていることは？","「知識の断片」を繋げる力はあるか？","「直感に従う」のはいつで、「論理に従う」のはいつか？","「複雑な問題」を単純にしすぎていないか？","「シンプルな問題」を複雑にしすぎていないか？","「思考の質」を上げるためにしていることは？","「問いを立てる」前に「目的」を確認しているか？","「手段」が「目的」になっていないか？","「KPI」を追いすぎて本質を見失っていないか？","「習慣」が思考にどう影響しているか？","「朝のルーティン」は思考の質を上げているか？","「睡眠」と「判断力」の関係を意識しているか？","「孤独な思考時間」を確保しているか？","「書くこと」で思考がどう変わるか？","「言語化する習慣」が自分をどう変えているか？","今日の自分の「思考の質」は高かったか？"]};
 const catColors={"ビジネス思考・戦略":{bg:"#e8f5e9",border:"#1b5e20",tag:"#43a047"},"キャリア・自己成長":{bg:"#e3f2fd",border:"#0d47a1",tag:"#1976d2"},"リーダーシップ・人間関係":{bg:"#fce4ec",border:"#880e4f",tag:"#e91e63"},"マーケティング・顧客理解":{bg:"#fff3e0",border:"#bf360c",tag:"#f57c00"},"自己理解・思考習慣":{bg:"#f3e5f5",border:"#4a148c",tag:"#8e24aa"}};
 const allQ=Object.entries(categories).flatMap(([cat,qs])=>qs.map((text,i)=>({id:`${cat}-${i}`,category:cat,text})));
 const PER_PAGE=50;
-let state={search:"",cat:"すべて",page:1,picked:null};
+function loadHistory(){try{return JSON.parse(localStorage.getItem("gengo_history")||"[]")}catch{return[]}}
+function saveHistory(h){try{localStorage.setItem("gengo_history",JSON.stringify(h))}catch{}}
+let state={tab:"list",search:"",cat:"すべて",page:1,picked:null,writing:null,history:loadHistory()};
+function openWrite(q){state.writing={q,shiko:"",riyu:""};const ws=document.getElementById("writeScreen");ws.classList.add("open");ws.querySelector(".write-q-box").textContent=q.text;ws.querySelector("#shiko").value="";ws.querySelector("#riyu").value="";ws.querySelector("#saveDone").textContent="";ws.scrollTop=0;}
+function closeWrite(){document.getElementById("writeScreen").classList.remove("open")}
+function saveEntry(){const shiko=document.getElementById("shiko").value.trim();const riyu=document.getElementById("riyu").value.trim();if(!shiko&&!riyu){document.getElementById("saveDone").textContent="⚠ 何か入力してください";return}const entry={id:Date.now(),date:new Date().toLocaleDateString("ja-JP",{year:"numeric",month:"2-digit",day:"2-digit"}),category:state.writing.q.category,question:state.writing.q.text,shiko,riyu};state.history.unshift(entry);saveHistory(state.history);document.getElementById("saveDone").textContent="✅ 保存しました！";setTimeout(closeWrite,900);}
 function filtered(){return allQ.filter(q=>(state.cat==="すべて"||q.category===state.cat)&&q.text.includes(state.search))}
-function render(){
-const f=filtered();const totalPages=Math.ceil(f.length/PER_PAGE);const paged=f.slice((state.page-1)*PER_PAGE,state.page*PER_PAGE);const cats=["すべて",...Object.keys(categories)];
-const pickedHTML=state.picked?(()=>{const col=catColors[state.picked.category]||{};return`<div class="picked-card" style="background:${col.bg};border-color:${col.border}"><div class="picked-cat" style="color:${col.tag};font-size:10px;font-weight:800;letter-spacing:1.5px;margin-bottom:10px">${state.picked.category}</div><div class="picked-text">${state.picked.text}</div><div class="picked-hint">💡 A4用紙に書いて2分間、深掘りしてみましょう</div><button class="btn-close" onclick="closePicked()">✕ 閉じる</button></div>`;})():"";
-const catBtns=cats.map(c=>{const col=catColors[c];const active=state.cat===c;return`<button class="cat-btn" style="background:${active?(col?.tag||"#0f172a"):"#e8e8e8"};color:${active?"#fff":"#555"}" onclick="setCat('${c}')">${c}</button>`;}).join("");
-const qItems=paged.map((q,i)=>{const col=catColors[q.category]||{tag:"#888"};const num=(state.page-1)*PER_PAGE+i+1;return`<div class="q-item" style="border-left-color:${col.tag}"><div class="q-num">${String(num).padStart(3,"0")}</div><div style="flex:1"><div class="q-cat" style="color:${col.tag}">${q.category}</div><div class="q-text">${q.text}</div></div></div>`;}).join("");
-const pageNums=totalPages>1?(()=>{let btns=`<button class="page-btn" style="background:#e2e8f0;color:#334155" onclick="setPage(${state.page-1})" ${state.page===1?"disabled":""}>←</button>`;for(let p=1;p<=totalPages;p++){const active=p===state.page;btns+=`<button class="page-btn" style="background:${active?"#0f172a":"#e2e8f0"};color:${active?"#fff":"#475569"}" onclick="setPage(${p})">${p}</button>`;}btns+=`<button class="page-btn" style="background:#e2e8f0;color:#334155" onclick="setPage(${state.page+1})" ${state.page===totalPages?"disabled":""}>→</button>`;return`<div class="pagination">${btns}</div>`;})():"";
-document.getElementById("app").innerHTML=`<div class="header"><div style="font-size:10px;letter-spacing:4px;color:#64748b;margin-bottom:6px">BUSINESS × SELF-AWARENESS</div><h1>言語化トレーニング　問い集</h1><div class="header-count">ビジネス特化版　全${allQ.length}問</div><button class="btn-random" onclick="pickRandom()">🎲 ランダムに1問ピック</button></div>${pickedHTML}<div class="controls"><input class="search-input" type="search" placeholder="🔍 問いを検索..." value="${state.search}" oninput="setSearch(this.value)"><div class="cat-scroll">${catBtns}</div><div class="hit-count">${f.length}問 ヒット</div></div><div class="q-list">${qItems}</div>${pageNums}<div class="footer-space"></div>`;}
-function pickRandom(){const pool=filtered();const src=pool.length>0?pool:allQ;state.picked=src[Math.floor(Math.random()*src.length)];window.scrollTo({top:0,behavior:"smooth"});render();}
-function closePicked(){state.picked=null;render();}
-function setSearch(v){state.search=v;state.page=1;render();}
-function setCat(c){state.cat=c;state.page=1;render();}
-function setPage(p){state.page=p;window.scrollTo({top:0});render();}
-render();
+function renderList(){const f=filtered();const totalPages=Math.ceil(f.length/PER_PAGE);const paged=f.slice((state.page-1)*PER_PAGE,state.page*PER_PAGE);const cats=["すべて",...Object.keys(categories)];const pickedHTML=state.picked?(()=>{const col=catColors[state.picked.category]||{};return`<div class="picked-wrap"><div class="picked-card" style="background:${col.bg};border-color:${col.border}"><div class="picked-cat" style="color:${col.tag}">${state.picked.category}</div><div class="picked-text">${state.picked.text}</div><button class="btn-write" onclick="openWrite(state.picked)">✏️ この問いで書く</button><button class="btn-close-sm" onclick="state.picked=null;renderAll()">✕ 閉じる</button></div></div>`;})():"";const catBtns=cats.map(c=>{const col=catColors[c];const active=state.cat===c;return`<button class="cat-btn" style="background:${active?(col?.tag||"#0f172a"):"#e8e8e8"};color:${active?"#fff":"#555"}" onclick="setCat('${c}')">${c}</button>`;}).join("");const qItems=paged.map((q,i)=>{const col=catColors[q.category]||{tag:"#888"};const num=(state.page-1)*PER_PAGE+i+1;return`<div class="q-item" style="border-left-color:${col.tag}" onclick="openWrite({category:'${q.category.replace(/'/g,"\\'")}',text:'${q.text.replace(/'/g,"\\'")}'})" ><div class="q-num">${String(num).padStart(3,"0")}</div><div style="flex:1"><div class="q-cat-label" style="color:${col.tag}">${q.category}</div><div class="q-text">${q.text}</div></div></div>`;}).join("");const pageNums=totalPages>1?(()=>{let btns=`<button class="page-btn" style="background:#e2e8f0;color:#334155" onclick="setPage(${state.page-1})" ${state.page===1?"disabled":""}>←</button>`;for(let p=1;p<=totalPages;p++){const active=p===state.page;btns+=`<button class="page-btn" style="background:${active?"#0f172a":"#e2e8f0"};color:${active?"#fff":"#475569"}" onclick="setPage(${p})">${p}</button>`;}btns+=`<button class="page-btn" style="background:#e2e8f0;color:#334155" onclick="setPage(${state.page+1})" ${state.page===totalPages?"disabled":""}>→</button>`;return`<div class="pagination">${btns}</div>`;})():"";return`<div class="header"><div class="header-label">BUSINESS × SELF-AWARENESS</div><h1>言語化トレーニング　問い集</h1><div class="header-count">全${allQ.length}問</div><button class="btn-random" onclick="pickRandom()">🎲 ランダムに1問ピック</button></div>${pickedHTML}<div class="controls"><input class="search-input" type="search" placeholder="🔍 問いを検索..." value="${state.search}" oninput="setSearch(this.value)"><div class="cat-scroll">${catBtns}</div><div class="hit-count">${f.length}問 ヒット</div></div><div class="q-list">${qItems}</div>${pageNums}<div class="footer-space"></div>`;}
+function renderHistory(){if(state.history.length===0)return`<div class="history-empty">📝 まだ記録がありません<br><br>問いを選んで書いてみましょう</div>`;return state.history.map(e=>{const col=catColors[e.category]||{tag:"#888"};return`<div class="hist-item" style="border-left-color:${col.tag}"><button class="hist-delete" onclick="deleteEntry(${e.id})">×</button><div class="hist-date">${e.date}　<span style="color:${col.tag};font-weight:700;font-size:10px">${e.category}</span></div><div class="hist-q">${e.question}</div>${e.shiko?`<div class="hist-section"><div class="hist-label">思考</div><div class="hist-text">${e.shiko}</div></div>`:""}${e.riyu?`<div class="hist-section"><div class="hist-label">理由</div><div class="hist-text">${e.riyu}</div></div>`:""}`;}).join("")+`<div class="footer-space"></div>`;}
+function renderAll(){const navHTML=`<div class="nav"><button class="nav-btn ${state.tab==="list"?"active":""}" onclick="setTab('list')">📋 問い一覧</button><button class="nav-btn ${state.tab==="history"?"active":""}" onclick="setTab('history')">📓 記録履歴${state.history.length>0?` (${state.history.length})`:""}  </button></div>`;const mainHTML=state.tab==="list"?renderList():renderHistory();document.getElementById("root").innerHTML=navHTML+`<div id="mainContent">${mainHTML}</div>`;}
+function deleteEntry(id){if(!confirm("この記録を削除しますか？"))return;state.history=state.history.filter(e=>e.id!==id);saveHistory(state.history);renderAll();}
+function pickRandom(){const pool=filtered();const src=pool.length>0?pool:allQ;state.picked=src[Math.floor(Math.random()*src.length)];window.scrollTo({top:0,behavior:"smooth"});renderAll();}
+function setSearch(v){state.search=v;state.page=1;renderAll();}
+function setCat(c){state.cat=c;state.page=1;renderAll();}
+function setPage(p){state.page=p;window.scrollTo({top:0});renderAll();}
+function setTab(t){state.tab=t;renderAll();}
+renderAll();
+document.body.insertAdjacentHTML("beforeend",`<div class="write-screen" id="writeScreen"><div class="write-header"><button class="btn-back" onclick="closeWrite()">←</button><div class="write-title">✏️ 言語化トレーニング</div></div><div class="write-body"><div class="write-q-box" id="writeQ"></div><div class="write-section"><div class="section-label"><span class="section-badge">思考</span><span class="section-sub">どう思う？</span></div><textarea class="write-area" id="shiko" placeholder="まず頭に浮かんだことを書く。正解は不要。"></textarea></div><div class="write-section"><div class="section-label"><span class="section-badge">理由</span><span class="section-sub">なぜそう思う？</span></div><textarea class="write-area" id="riyu" placeholder="「なぜ？」を深掘りして書く。"></textarea></div><button class="btn-save" onclick="saveEntry()">💾 保存する</button><div id="saveDone" class="save-done"></div></div></div>`);
 </script>
 </body>
 </html>
